@@ -15,7 +15,13 @@ class Modal extends Component {
     };
 
     render() {
-        return <div></div>;
+        return (
+            <div className="Overlay">
+                <div className="Modal">
+                    <img src="" alt="" />
+                </div>
+            </div>
+        );
     }
 }
 

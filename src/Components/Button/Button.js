@@ -14,6 +14,13 @@ class Button extends Component {
         console.log('hello, baby');
     };
 
+    onLoadMore = () => {
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth',
+        });
+    };
+
     render() {
         return <div></div>;
     }
