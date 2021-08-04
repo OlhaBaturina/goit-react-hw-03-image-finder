@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
+
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './App.css';
+import s from './App.css';
 import Searchbar from './Components/Searchbar/Searchbar';
 import ImageGallery from './Components/ImageGallery/ImageGallery';
 import CustomLoader from './Components/Loader/Loader';
 import Button from './Components/Button/Button';
 import Modal from './Components/Modal/Modal';
 import fetchImgAPI from './servises/fetchImgAPI';
-import ErrorNotification from './Components/ErrorNotification/ErrorNotification';
 
 class App extends Component {
     state = {
@@ -16,7 +16,7 @@ class App extends Component {
         currentPage: 1,
         searchQuery: '',
         showModal: false,
-        isLoading: false,
+        loading: false,
         error: null,
         modalImage: '',
     };
@@ -44,7 +44,7 @@ class App extends Component {
             return;
         }
 
-        this.setState({ isLoading: true });
+        this.setState({ loading: true });
 
         fetchImgAPI
             .fetchImgAPI(options)
@@ -61,7 +61,7 @@ class App extends Component {
             })
             .catch(error => this.setState({ error }))
             .finally(() => {
-                this.setState({ isLoading: false });
+                this.setState({ loading: false });
             });
     };
 
@@ -72,7 +72,7 @@ class App extends Component {
         });
     };
 
-    toggleModal = () => {
+    closeModal = () => {
         this.setState({
             showModal: false,
             modalImage: '',
@@ -80,34 +80,30 @@ class App extends Component {
     };
 
     render() {
-        const { showModal, images, isLoading, modalImage, error } = this.state;
-        const shouldRenderLoadMoreButton = images.length > 0 && !isLoading;
+        const { showModal, error, images, loading, modalImage } = this.state;
 
         return (
-            <>
-                {error && (
-                    <ErrorNotification
-                        text={`Ooops... something went wrong: ${error}`}
+            <div className={s.App}>
+                <Searchbar onSubmit={this.onChangeQuery} />
+                {error ? (
+                    toast.error(`Something went wrong error: ${error}`)
+                ) : (
+                    <ImageGallery images={images} onImgClick={this.openModal} />
+                )}
+                {loading && <CustomLoader />}
+                {images.length > 0 && (
+                    <Button
+                        text={'Load more...'}
+                        onLoadClick={this.fetchImgAPI}
                     />
                 )}
-                <Searchbar onSubmit={this.onChangeQuery} />
-                <>
-                    <ImageGallery images={images} onImgClick={this.openModal} />
-                    {shouldRenderLoadMoreButton && (
-                        <Button
-                            text={'Load more...'}
-                            onLoadClick={this.fetchImgAPI}
-                        />
-                    )}
-                    {isLoading && <CustomLoader />}
-                    {showModal && (
-                        <Modal onClose={this.toggleModal}>
-                            <img src={modalImage} alt="" />
-                        </Modal>
-                    )}
-                </>
-                <ToastContainer autoClose={2000} />
-            </>
+                {showModal && (
+                    <Modal closeModal={this.closeModal}>
+                        <img src={modalImage} alt="img" />
+                    </Modal>
+                )}
+                <ToastContainer />
+            </div>
         );
     }
 }

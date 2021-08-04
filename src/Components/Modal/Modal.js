@@ -1,40 +1,46 @@
-// import React, { Component } from 'react';
-// import { createPortal } from 'react-dom';
-// import s from './Modal.module.css';
+import React, { Component } from 'react';
+import { createPortal } from 'react-dom';
 
-// const modalRoot = document.querySelector('#modal-root');
-// class Modal extends Component {
-//     componentDidMount() {
-//         window.addEventListener('keydown', this.handleKeyDown);
-//     }
+import s from './Modal.module.css';
+import PropTypes from 'prop-types';
 
-//     componentWillMount() {
-//         window.removeEventListener('keydown', this.handleKeyDown);
-//     }
+const modalRoot = document.querySelector('#modal-root');
 
-//     handleKeyDown = e => {
-//         if (e.code === 'Escape') {
-//             this.props.onClose();
-//         }
-//     };
+class Modal extends Component {
+    static propTypes = {
+        closeModal: PropTypes.func.isRequired,
+    };
 
-//     handleBackdropClick = e => {
-//         if (e.currentTarget === e.target) {
-//             this.props.onClose();
-//         }
-//     };
+    componentDidMount() {
+        window.addEventListener('keydown', this.handleKeyDown);
+    }
 
-//     render() {
-//         const { children } = this.props;
-//         const backdropClick = this.handleBackdropClick;
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyDown);
+    }
 
-//         return createPortal(
-//             <div className={s.Overlay} onClick={backdropClick}>
-//                 <div className={s.Modal}>{children}</div>
-//             </div>,
-//             modalRoot,
-//         );
-//     }
-// }
+    handleKeyDown = event => {
+        if (event.code === 'Escape') {
+            this.props.closeModal();
+        }
+    };
 
-// export default Modal;
+    handleCloseModal = event => {
+        const { currentTarget, target } = event;
+        if (currentTarget === target) {
+            this.props.closeModal();
+        }
+    };
+
+    render() {
+        const { children } = this.props;
+        return createPortal(
+            <div className={s.Overlay} onClick={this.handleCloseModal}>
+                <div className={s.Modal}>{children}</div>
+            </div>,
+            modalRoot,
+        );
+    }
+}
+
+export default Modal;
