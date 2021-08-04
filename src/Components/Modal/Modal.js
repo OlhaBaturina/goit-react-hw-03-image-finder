@@ -9,11 +9,6 @@ class Modal extends Component {
 
     // uniqId = uuidv4();
 
-    handleSubmit = event => {
-        event.preventDefault();
-        console.log('hello, baby');
-    };
-
     render() {
         return (
             <div className="Overlay">

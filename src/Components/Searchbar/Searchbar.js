@@ -1,36 +1,28 @@
 import React, { Component } from 'react';
-import { toast } from 'react-toastify';
 import s from './Searchbar.module.css';
 
 class Searchbar extends Component {
-    // static propTypes = {
-    //     submitMethod: PropTypes.func.isRequired,
-    // };
-    state = {
-        searchQuery: '',
+    state = { query: '' };
+
+    handleChange = e => {
+        this.setState({ query: e.currentTarget.value });
     };
 
-    // uniqId = uuidv4();
-
-    onSearchQuery = e => {
-        this.setState({ searchQuery: e.currentTarget.value.toLowerCase() });
-    };
-
-    onFormSubmit = e => {
+    handleSubmit = e => {
         e.preventDefault();
 
-        if (this.state.searchQuery.trim() === '') {
-            toast.error('Please enter your request');
-            return;
-        }
-        this.props.submitForm(this.state.searchQuery);
-        this.setState({ searchQuery: '' });
+        const { query } = this.state;
+
+        this.props.onSubmit(query);
+        this.setState({ query: '' });
     };
 
     render() {
+        const { query } = this.state;
+
         return (
             <header className={s.Searchbar}>
-                <form onSubmit={this.onFormSubmit} className={s.SearchForm}>
+                <form className={s.SearchForm} onSubmit={this.handleSubmit}>
                     <button type="submit" className={s.SearchForm_button}>
                         <span className={s.SearchForm_button_label}>
                             Search
@@ -39,12 +31,12 @@ class Searchbar extends Component {
 
                     <input
                         className={s.SearchForm_input}
+                        value={query}
+                        onChange={this.handleChange}
                         type="text"
-                        autocomplete="off"
-                        autofocus
+                        autoComplete="off"
+                        autoFocus
                         placeholder="Search images and photos"
-                        onChange={this.onSearchQuery}
-                        value={this.state.searchQuery}
                     />
                 </form>
             </header>
