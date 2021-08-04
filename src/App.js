@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import s from './App.css';
@@ -84,6 +83,7 @@ class App extends Component {
 
         return (
             <div className={s.App}>
+                <ToastContainer />
                 <Searchbar onSubmit={this.onChangeQuery} />
                 {error ? (
                     toast.error(`Something went wrong error: ${error}`)
@@ -102,7 +102,6 @@ class App extends Component {
                         <img src={modalImage} alt="img" />
                     </Modal>
                 )}
-                <ToastContainer />
             </div>
         );
     }
