@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+// import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Searchbar from './Components/Searchbar/Searchbar';
@@ -7,7 +7,7 @@ import ImageGallery from './Components/ImageGallery/ImageGallery';
 import Loader from './Components/Loader/Loader';
 import Button from './Components/Button/Button';
 import Modal from './Components/Modal/Modal';
-import fetchImgAPI from './services/fetchImgAPI';
+import fetchImgAPI from './servises/fetchImgAPI';
 
 class App extends Component {
     state = {
@@ -22,7 +22,7 @@ class App extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.searchQuery !== this.state.searchQuery) {
-            this.fetchImg();
+            this.fetchImgAPI();
         }
     }
 
@@ -35,7 +35,7 @@ class App extends Component {
         });
     };
 
-    fetchImg = () => {
+    fetchImgAPI = () => {
         const { currentPage, searchQuery } = this.state;
         const options = { searchQuery, currentPage };
 
@@ -46,7 +46,7 @@ class App extends Component {
         this.setState({ isLoading: true });
 
         fetchImgAPI
-            .fetchImg(options)
+            .fetchImgAPI(options)
             .then(hits => {
                 this.setState(prevState => ({
                     images: [...prevState.images, ...hits],
@@ -79,7 +79,7 @@ class App extends Component {
     };
 
     render() {
-        const { showModal, images, isLoading, modalImage, error } = this.state;
+        const { showModal, images, isLoading, modalImage } = this.state;
         const shouldRenderLoadMoreButton = images.length > 0 && !isLoading;
 
         return (
@@ -90,8 +90,8 @@ class App extends Component {
                     <ImageGallery images={images} onImgClick={this.openModal} />
                     {shouldRenderLoadMoreButton && (
                         <Button
-                            text={'Load more'}
-                            onLoadClick={this.fetchImg}
+                            text={'Load more...'}
+                            onLoadClick={this.fetchImgAPI}
                         />
                     )}
                     {isLoading && <Loader />}
@@ -107,45 +107,3 @@ class App extends Component {
 }
 
 export default App;
-
-// class App extends Component {
-//     state = {
-//         imageName: '',
-//         imagesArray: [],
-//     };
-
-//     onSubmit = searchQuery => {
-//         console.log(searchQuery);
-//         this.setState({ imageName: this.searchQuery });
-//     };
-
-//     imagesOnState = image =>{
-//         this.setState({imagesArray: [...image]})
-//     }
-
-//     render() {
-//         return (
-//             <>
-//                 <Searchbar
-//                     submitForm={this.onSubmit} />
-//                 <ImageGallery
-
-//                     // children={this.state.imagesArray
-//                     // .map(image => <ImageGalery
-//                     // src={image.webformatURL} alt={image.tags.split('')}/>)}
-//                 />
-//               <ImageGalleryItem
-//                     searchQuery={this.state.imageName}
-//                     imagesArray={this.imagesOnState}
-//               />
-//                 <Loader />
-//                 <Button />
-//                 <Modal />
-//                 <ToastContainer
-//                     autoClose={2000} />
-//             </>
-//         );
-//     }
-// }
-
-// export default App;

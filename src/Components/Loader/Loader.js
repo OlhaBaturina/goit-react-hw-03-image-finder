@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import s from './Loader.module.css';
+// import s from './Loader.module.css';
 
 class Loader extends Component {
     // static propTypes = {

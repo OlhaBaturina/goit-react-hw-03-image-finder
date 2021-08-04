@@ -1,23 +1,40 @@
-import React, { Component } from 'react';
-import s from './Modal.module.css';
+// import React, { Component } from 'react';
+// import { createPortal } from 'react-dom';
+// import s from './Modal.module.css';
 
-class Modal extends Component {
-    // static propTypes = {
-    //     submitMethod: PropTypes.func.isRequired,
-    // };
-    state = { name: '', number: '', id: '' };
+// const modalRoot = document.querySelector('#modal-root');
+// class Modal extends Component {
+//     componentDidMount() {
+//         window.addEventListener('keydown', this.handleKeyDown);
+//     }
 
-    // uniqId = uuidv4();
+//     componentWillMount() {
+//         window.removeEventListener('keydown', this.handleKeyDown);
+//     }
 
-    render() {
-        return (
-            <div className="Overlay">
-                <div className="Modal">
-                    <img src="" alt="" />
-                </div>
-            </div>
-        );
-    }
-}
+//     handleKeyDown = e => {
+//         if (e.code === 'Escape') {
+//             this.props.onClose();
+//         }
+//     };
 
-export default Modal;
+//     handleBackdropClick = e => {
+//         if (e.currentTarget === e.target) {
+//             this.props.onClose();
+//         }
+//     };
+
+//     render() {
+//         const { children } = this.props;
+//         const backdropClick = this.handleBackdropClick;
+
+//         return createPortal(
+//             <div className={s.Overlay} onClick={backdropClick}>
+//                 <div className={s.Modal}>{children}</div>
+//             </div>,
+//             modalRoot,
+//         );
+//     }
+// }
+
+// export default Modal;
