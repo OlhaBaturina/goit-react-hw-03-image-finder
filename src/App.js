@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-// import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Searchbar from './Components/Searchbar/Searchbar';
 import ImageGallery from './Components/ImageGallery/ImageGallery';
-import Loader from './Components/Loader/Loader';
+import CustomLoader from './Components/Loader/Loader';
 import Button from './Components/Button/Button';
 import Modal from './Components/Modal/Modal';
 import fetchImgAPI from './servises/fetchImgAPI';
+import ErrorNotification from './Components/ErrorNotification/ErrorNotification';
 
 class App extends Component {
     state = {
@@ -79,12 +80,16 @@ class App extends Component {
     };
 
     render() {
-        const { showModal, images, isLoading, modalImage } = this.state;
+        const { showModal, images, isLoading, modalImage, error } = this.state;
         const shouldRenderLoadMoreButton = images.length > 0 && !isLoading;
 
         return (
             <>
-                {/* {error && toast.error(`Ooops... something went wrong: ${error}`)} */}
+                {error && (
+                    <ErrorNotification
+                        text={`Ooops... something went wrong: ${error}`}
+                    />
+                )}
                 <Searchbar onSubmit={this.onChangeQuery} />
                 <>
                     <ImageGallery images={images} onImgClick={this.openModal} />
@@ -94,13 +99,14 @@ class App extends Component {
                             onLoadClick={this.fetchImgAPI}
                         />
                     )}
-                    {isLoading && <Loader />}
+                    {isLoading && <CustomLoader />}
                     {showModal && (
                         <Modal onClose={this.toggleModal}>
                             <img src={modalImage} alt="" />
                         </Modal>
                     )}
                 </>
+                <ToastContainer autoClose={2000} />
             </>
         );
     }

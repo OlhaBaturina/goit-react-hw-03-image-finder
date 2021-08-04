@@ -1,22 +1,16 @@
-import React, { Component } from 'react';
-// import s from './Loader.module.css';
+import Loader from 'react-loader-spinner';
+import s from './Loader.module.css';
 
-class Loader extends Component {
-    // static propTypes = {
-    //     submitMethod: PropTypes.func.isRequired,
-    // };
-    state = { name: '', number: '', id: '' };
+const CustomLoader = () => (
+    <div className={s.Loader}>
+        <Loader
+            type="ThreeDots"
+            color="#3f51b5"
+            height={80}
+            width={80}
+            timeout={3000} //3 secs
+        />
+    </div>
+);
 
-    // uniqId = uuidv4();
-
-    handleSubmit = event => {
-        event.preventDefault();
-        console.log('hello, baby');
-    };
-
-    render() {
-        return <div></div>;
-    }
-}
-
-export default Loader;
+export default CustomLoader;
